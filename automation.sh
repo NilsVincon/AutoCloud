@@ -9,8 +9,10 @@ fi
 echo "Installation de Docker via snap..."
 snap install docker || { echo "Échec de l'installation de Docker."; exit 1; }
 
-sleep 10
+echo "Attente de 5 secondes pour permettre à Docker de démarrer..."
+sleep 5
 
+systemctl start docker
 echo "Récupération de l'image erudinsky/mario depuis Docker Hub..."
 docker pull erudinsky/mario || { echo "Échec du téléchargement de l'image Docker."; exit 1; }
 
