@@ -9,6 +9,8 @@ fi
 echo "Installation de Docker via snap..."
 snap install docker || { echo "Échec de l'installation de Docker."; exit 1; }
 
+sleep 10
+
 echo "Récupération de l'image erudinsky/mario depuis Docker Hub..."
 docker pull erudinsky/mario || { echo "Échec du téléchargement de l'image Docker."; exit 1; }
 
