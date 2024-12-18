@@ -1,25 +1,38 @@
 #!/bin/bash
 
-# Vérifier si le script est exécuté en tant que root
-if [ "$EUID" -ne 0 ]; then
-  echo "Veuillez exécuter ce script en tant que root (sudo)."
-  exit 1
-fi
+# Mettre à jour le système
+echo "Mise à jour des dépôts..."
+sudo apt update && sudo apt upgrade -y
 
-echo "Update."
-sudo apt update 
-echo "Upgrade."
-sudo apt upgrade -y 
+# Installer les dépendances nécessaires
+echo "Installation des dépendances..."
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 
-echo "Installation de Docker via snap..."
-sudo snap install docker || { echo "Échec de l'installation de Docker."; exit 1; }
+# Ajouter la clé GPG officielle de Docker
+echo "Ajout de la clé GPG Docker..."
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
-echo "Attente de 5 secondes pour permettre à Docker de démarrer..."
-sleep 5
+# Ajouter le dépôt Docker
+echo "Ajout du dépôt Docker..."
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo snap services
+# Mettre à jour les dépôts
+echo "Mise à jour des dépôts après ajout de Docker..."
+sudo apt update
 
-systemctl start docker
+# Installer Docker
+echo "Installation de Docker..."
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+
+# Démarrer et activer Docker
+echo "Démarrage et activation du service Docker..."
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# Ajouter l'utilisateur au groupe Docker (facultatif)
+echo "Ajout de l'utilisateur actuel au groupe Docker pour éviter sudo..."
+sudo usermod -aG docker $USER
+
 echo "Récupération de l'image pengbai/docker-supermario depuis Docker Hub..."
 docker pull pengbai/docker-supermario || { echo "Échec du téléchargement de l'image Docker."; exit 1; }
 
