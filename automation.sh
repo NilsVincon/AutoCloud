@@ -6,8 +6,10 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-sudo apt update
-sudo apt upgrade -y
+echo "Update."
+sudo apt update 
+echo "Upgrade."
+sudo apt upgrade -y 
 
 echo "Installation de Docker via snap..."
 sudo snap install docker || { echo "Échec de l'installation de Docker."; exit 1; }
