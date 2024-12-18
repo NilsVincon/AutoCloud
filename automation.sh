@@ -6,11 +6,16 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+sudo apt update
+sudo apt upgrade -y
+
 echo "Installation de Docker via snap..."
-snap install docker || { echo "Échec de l'installation de Docker."; exit 1; }
+sudo snap install docker || { echo "Échec de l'installation de Docker."; exit 1; }
 
 echo "Attente de 5 secondes pour permettre à Docker de démarrer..."
 sleep 5
+
+sudo snap services
 
 systemctl start docker
 echo "Récupération de l'image pengbai/docker-supermario depuis Docker Hub..."
