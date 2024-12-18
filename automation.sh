@@ -7,7 +7,8 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 echo "Installation de Docker via snap..."
-snap install docker || { echo "Échec de l'installation de Docker."; exit 1; }
+sudo dpkg --configure -a || { echo "Échec de la configuration du dpkg."; exit 1; }
+sudo apt install docker || { echo "Échec de l'installation de Docker."; exit 1; }
 
 echo "Attente de 5 secondes pour permettre à Docker de démarrer..."
 sleep 5
