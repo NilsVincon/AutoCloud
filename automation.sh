@@ -13,10 +13,10 @@ echo "Attente de 5 secondes pour permettre à Docker de démarrer..."
 sleep 5
 
 systemctl start docker
-echo "Récupération de l'image erudinsky/mario depuis Docker Hub..."
+echo "Récupération de l'image pengbai/docker-supermario depuis Docker Hub..."
 docker pull pengbai/docker-supermario || { echo "Échec du téléchargement de l'image Docker."; exit 1; }
 
 echo "Exécution du conteneur Docker..."
-docker run -d -p 80:8080 pengbai/docker-supermario || { echo "Échec de l'exécution du conteneur Docker."; exit 1; }
+docker run --name superrmario -p 80:8080 -d pengbai/docker-supermario || { echo "Échec de l'exécution du conteneur Docker."; exit 1; }
 
 echo "Le conteneur 'supermario' est en cours d'exécution. Vous pouvez y accéder sur http://localhost."
