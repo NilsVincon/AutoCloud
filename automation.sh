@@ -20,6 +20,8 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docke
 echo "Mise à jour des dépôts après ajout de Docker..."
 sudo apt update
 
+sudo dpkg --configure -a
+
 # Installer Docker
 echo "Installation de Docker..."
 sudo apt install -y docker-ce docker-ce-cli containerd.io
